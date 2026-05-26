@@ -1,0 +1,21 @@
+{
+  "title": "AR-RAG: Autoregressive Retrieval Augmentation for Image Generation",
+  "methodology": "The authors propose patch-level autoregressive k-nearest-neighbor retrieval augmentation for autoregressive image generation models (Janus-Pro, Show-o), with two implementations: a training-free Distribution-Augmentation in Decoding (DAiD) that mixes retrieved patch distributions into the model's next-token distribution, and a parameter-efficient Feature-Augmentation in Decoding (FAiD) that uses multi-scale convolutional smoothing and learned compatibility scores to blend retrieved patch features into hidden states across transformer layers.",
+  "key_findings": [
+    "AR-RAG performs dynamic, patch-level retrieval at every generation step using already-generated surrounding patches as queries, rather than a single static retrieval based on the input prompt.",
+    "Janus-Pro + FAiD achieves 6.67 FID on Midjourney-30K and a 0.78 overall GenEval score, setting a new state of the art among autoregressive image generators of comparable scale.",
+    "Prior image-level retrieval-augmented baselines (RDM, ImageRAG, RA-CM3) actually hurt performance vs. their non-retrieval counterparts on GenEval and DPG-Bench due to over-copying irrelevant content and stylistic bias.",
+    "Both DAiD (+0.01 GenEval, +0.62 DPG) and FAiD (+0.07 GenEval, +2.10 DPG) improve over the Janus-Pro baseline, with biggest gains on multi-object/spatial categories like 'Two Obj.' and 'Position'.",
+    "DAiD adds only ~0.22% inference overhead while FAiD adds ~36% on a single L40 GPU, both deemed practical for real-world use.",
+    "Qualitative analysis shows AR-RAG reduces local distortions (e.g., wrong number of limbs on animals, fused/implausible objects) without copying irrelevant elements from reference images."
+  ],
+  "limitations": [
+    "Methods are demonstrated only on autoregressive image generation backbones (Janus-Pro, Show-o); generalization to diffusion-based models is not shown.",
+    "FAiD requires parameter-efficient fine-tuning and adds ~36% inference latency, which may be non-trivial at scale.",
+    "Quality depends heavily on the retrieval database (CC12M, JourneyDB, DataComp ~13.6M images); behavior on out-of-distribution prompts or smaller databases is not deeply analyzed.",
+    "Hyperparameters (retrieval weight \u03bb, temperature \u03c4, hop size h, top-K, number of FAiD modules) require empirical tuning and may not transfer across models.",
+    "Evaluation focuses on automated image-quality metrics (FID, CMMD, FWD, GenEval, DPG-Bench); no human evaluation of fidelity or faithfulness is reported."
+  ],
+  "relevance_score": 2,
+  "relevance_reasoning": "The research question concerns retrieval augmentation for factual accuracy in LLMs (text generation), but this paper applies retrieval augmentation to image generation, not to factual text outputs. It only shares the high-level RAG paradigm; it does not address factuality, hallucination of facts, knowledge grounding, or any LLM text-output evaluation, so it is at best tangentially relevant."
+}
