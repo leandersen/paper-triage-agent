@@ -1,0 +1,24 @@
+{
+  "title": "Alleviating Hallucination in Large Vision-Language Models with Active Retrieval Augmentation",
+  "methodology": "The authors propose ARA (Active Retrieval-Augmented LVLM), a training-free framework that (a) actively decides whether to retrieve based on confidence/mutual-information difficulty metrics, (b) performs coarse-to-fine hierarchical retrieval over both whole images and grounded target objects against COCO and VisualGenome knowledge bases using CLIP embeddings, and (c) reranks retrieved image-text pairs by caption similarity before joint coarse/fine decoding with the LVLM.",
+  "key_findings": [
+    "Retrieval augmentation, when naively transferred from LLMs to LVLMs, can sometimes exacerbate hallucination, motivating a more careful design.",
+    "Coarse-to-fine hierarchical retrieval (full image + grounded object regions via Grounding DINO) reduces noise compared to full-image-only retrieval and recovers fine-grained details.",
+    "Active triggering of retrieval via query-aware mutual information (comparing p(answer|image,query) vs p(answer|query)) avoids unnecessary retrieval when the model is already confident, reducing retrieval frequency while preserving gains.",
+    "Reranking retrieved pairs using LVLM-generated captions filters visually-similar-but-semantically-different pairs and improves reliability.",
+    "On POPE across MSCOCO/A-OKVQA/GQA and three LVLMs (LLaVA-1.5, Qwen-VL, mPLUG-Owl2), ARA consistently improves F1, primarily by raising recall (up to ~10 points for mPLUG-Owl2).",
+    "On the MME hallucination subset, ARA improves object-level and attribute-level (especially Color) scores, raising LLaVA-1.5 total from 605 to 648.",
+    "On MMStar, ARA yields average gains of ~5-9 points across all six capability subsets for the three LVLMs.",
+    "On MMBench hallucination-related subsets (object localization, attribute, spatial relation, action), ARA improves average scores for all three LVLMs (e.g., Qwen-VL 0.668 -> 0.727)."
+  ],
+  "limitations": [
+    "Method is evaluated only on vision-language hallucination benchmarks (POPE, MME, MMStar, MMBench), not on pure-text LLM hallucination tasks.",
+    "Performance depends on external tools (Grounding DINO for object localization, LLaMA2-7B for entity extraction, CLIP for embeddings); failures in these components fall back to coarse retrieval only.",
+    "Effectiveness is tied to the coverage and quality of the external knowledge bases (COCO and VisualGenome); generalization to open-domain knowledge is not demonstrated.",
+    "Several hyperparameters (fusion weight alpha, active-retrieval threshold theta, number of retrieved pairs per LVLM) are tuned per benchmark via grid search, indicating sensitivity.",
+    "Improvements on harder adversarial settings (e.g., POPE adversarial, A-OKVQA adversarial) are smaller, suggesting residual difficulty with confusable co-occurring objects.",
+    "Inference cost increases due to grounding, multi-modal retrieval, reranking, and joint decoding, although the active-triggering mechanism partially mitigates this."
+  ],
+  "relevance_score": 7,
+  "relevance_reasoning": "The paper directly addresses how retrieval augmentation can reduce hallucinations, but specifically in large vision-language models rather than pure LLMs; many of the design insights (active triggering via mutual information, coarse-to-fine retrieval, reranking) transfer conceptually, though the multimodal focus means it only partially answers an LLM-centric research question."
+}

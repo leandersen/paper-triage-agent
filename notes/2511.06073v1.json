@@ -1,0 +1,23 @@
+{
+  "title": "Stemming Hallucination in Language Models Using a Licensing Oracle",
+  "methodology": "The authors compare five approaches to factual question-answering on a 17,726-pair dataset about U.S. rivers (derived from DBpedia): baseline LLMs (Claude Sonnet 4.5, Gemini 2.5 Flash Lite, Gemma 3-4B), LoRA fine-tuning for factual recall, LoRA fine-tuning for abstention (R-Tuning style), embedding-based RAG (multilingual-e5 + Gemini), and a Graph-RAG augmented with a 'Licensing Oracle' that uses SHACL validation against a 118,047-triple RDF knowledge graph to deterministically license or reject each extracted (subject, predicate, object) claim before emission.",
+  "key_findings": [
+    "Baseline LLMs achieved low factual accuracy on the domain (Claude Sonnet 4.5: 42.0%, Gemini 2.5 Flash Lite: 50.1%, Gemma 3-4B: 16.7%), confirming hallucination is widespread without grounding.",
+    "Fine-tuning for factual recall actually degraded accuracy (16.7% -> 8.5%), replicating Gekhman et al.'s 'fine-tuning paradox' where models become more confidently wrong.",
+    "Fine-tuning for abstention achieved only 56.7% abstention precision (near random), showing learned abstention is unreliable.",
+    "Embedding-based RAG sharply reduced hallucinations, improving accuracy from 50.1% to 89.5% (a 39.4 percentage-point gain) by injecting top-k retrieved passages into context.",
+    "Despite high accuracy, standard RAG has no principled abstention mechanism and still hallucinates when retrieved context is incomplete or contradictory ('epistemic mismatch').",
+    "Graph-based RAG with the Licensing Oracle matched RAG's accuracy (89.1%) while achieving perfect abstention precision (AP = 1.0) and zero false-answer rate on non-entailed claims (FAR-NE = 0.0), providing deterministic guarantees that statistical RAG cannot.",
+    "The authors argue retrieval augmentation alone is necessary but not sufficient; coupling retrieval with formal SHACL validation against a knowledge graph converts probabilistic grounding into 'constraint-governed generation.'"
+  ],
+  "limitations": [
+    "All experiments are single-run (n=1) with no variance estimates or significance testing.",
+    "Evaluation is restricted to one narrow domain (U.S. rivers from DBpedia), so generalization to open-domain or unstructured knowledge is unverified.",
+    "Approximately 15% of the validation graph's attributes were LLM-augmented, introducing a circularity concern.",
+    "The Oracle assumes perfect NER-based claim extraction (via GLiNER); real-world extraction errors could cause false abstentions or false validations.",
+    "The Licensing Oracle only works in domains representable as structured knowledge graphs with SHACL constraints; subjective, open-ended, or unstructured factual domains are out of scope.",
+    "RAG implementation uses a fixed top-k=5 with a single embedding model, so the reported RAG ceiling may not represent best-possible retrieval performance."
+  ],
+  "relevance_score": 7,
+  "relevance_reasoning": "The paper directly measures how retrieval augmentation reduces hallucinations (RAG cuts errors from ~50% to ~10%) and dissects RAG's mechanism and limits, but its central thesis is that RAG alone is insufficient and must be combined with formal graph-based validation. It is highly informative on RAG's empirical effect on hallucinations, though its primary contribution is an architectural alternative rather than a study of RAG itself."
+}

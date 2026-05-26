@@ -1,0 +1,129 @@
+{
+  "research_question": "How can retrieval augmentation reduce hallucinations in large language models?",
+  "search_results": [
+    {
+      "id": "2511.06073v1",
+      "title": "Stemming Hallucination in Language Models Using a Licensing Oracle",
+      "authors": [
+        "Simeon Emanuilov",
+        "Richard Ackermann"
+      ],
+      "summary": "Language models exhibit remarkable natural language generation capabilities but remain prone to hallucinations, generating factually incorrect information despite producing syntactically coherent responses. This study introduces the Licensing Oracle, an architectural solution designed to stem hallucinations in LMs by enforcing truth constraints through formal validation against structured knowledge graphs. Unlike statistical approaches that rely on data scaling or fine-tuning, the Licensing Oracle embeds a deterministic validation step into the model's generative process, ensuring that only factually accurate claims are made. We evaluated the effectiveness of the Licensing Oracle through experiments comparing it with several state-of-the-art methods, including baseline language model generation, fine-tuning for factual recall, fine-tuning for abstention behavior, and retrieval-augmented generation (RAG). Our results demonstrate that although RAG and fine-tuning improve performance, they fail to eliminate hallucinations. In contrast, the Licensing Oracle achieved perfect abstention precision (AP = 1.0) and zero false answers (FAR-NE = 0.0), ensuring that only valid claims were generated with 89.1% accuracy in factual responses. This work shows that architectural innovations, such as the Licensing Oracle, offer a necessary and sufficient solution for hallucinations in domains with structured knowledge representations, offering guarantees that statistical methods cannot match. Although the Licensing Oracle is specifically designed to address hallucinations in fact-based domains, its framework lays the groundwork for truth-constrained generation in future AI systems, providing a new path toward reliable, epistemically grounded models.",
+      "published": "2025-11-08"
+    },
+    {
+      "id": "2408.00555v1",
+      "title": "Alleviating Hallucination in Large Vision-Language Models with Active Retrieval Augmentation",
+      "authors": [
+        "Xiaoye Qu",
+        "Qiyuan Chen",
+        "Wei Wei",
+        "Jishuo Sun",
+        "Jianfeng Dong"
+      ],
+      "summary": "Despite the remarkable ability of large vision-language models (LVLMs) in image comprehension, these models frequently generate plausible yet factually incorrect responses, a phenomenon known as hallucination.Recently, in large language models (LLMs), augmenting LLMs by retrieving information from external knowledge resources has been proven as a promising solution to mitigate hallucinations.However, the retrieval augmentation in LVLM significantly lags behind the widespread applications of LVLM. Moreover, when transferred to augmenting LVLMs, sometimes the hallucination degree of the model is even exacerbated.Motivated by the research gap and counter-intuitive phenomenon, we introduce a novel framework, the Active Retrieval-Augmented large vision-language model (ARA), specifically designed to address hallucinations by incorporating three critical dimensions: (i) dissecting the retrieval targets based on the inherent hierarchical structures of images. (ii) pinpointing the most effective retrieval methods and filtering out the reliable retrieval results. (iii) timing the retrieval process to coincide with episodes of low certainty, while circumventing unnecessary retrieval during periods of high certainty. To assess the capability of our proposed ARA model in reducing hallucination, we employ three widely used LVLM models (LLaVA-1.5, Qwen-VL, and mPLUG-Owl2) across four benchmarks. Our empirical observations suggest that by utilizing fitting retrieval mechanisms and timing the retrieval judiciously, we can effectively mitigate the hallucination problem. We hope that this study can provide deeper insights into how to adapt the retrieval augmentation to LVLMs for reducing hallucinations with more effective retrieval and minimal retrieval occurrences.",
+      "published": "2024-08-01"
+    },
+    {
+      "id": "2503.21676v2",
+      "title": "How do language models learn facts? Dynamics, curricula and hallucinations",
+      "authors": [
+        "Nicolas Zucchet",
+        "J\u00f6rg Bornschein",
+        "Stephanie Chan",
+        "Andrew Lampinen",
+        "Razvan Pascanu",
+        "Soham De"
+      ],
+      "summary": "Large language models accumulate vast knowledge during pre-training, yet the dynamics governing this acquisition remain poorly understood. This work investigates the learning dynamics of language models on a synthetic factual recall task, uncovering three key findings: First, language models learn in three phases, exhibiting a performance plateau before acquiring precise factual knowledge. Mechanistically, this plateau coincides with the formation of attention-based circuits that support recall. Second, the training data distribution significantly impacts learning dynamics, as imbalanced distributions lead to shorter plateaus. Finally, hallucinations emerge simultaneously with knowledge, and integrating new knowledge into the model through fine-tuning is challenging, as it quickly corrupts its existing parametric memories. Our results emphasize the importance of data distribution in knowledge acquisition and suggest novel data scheduling strategies to accelerate neural network training.",
+      "published": "2025-03-27"
+    },
+    {
+      "id": "2505.21439v1",
+      "title": "Towards Better Instruction Following Retrieval Models",
+      "authors": [
+        "Yuchen Zhuang",
+        "Aaron Trinh",
+        "Rushi Qiang",
+        "Haotian Sun",
+        "Chao Zhang",
+        "Hanjun Dai",
+        "Bo Dai"
+      ],
+      "summary": "Modern information retrieval (IR) models, trained exclusively on standard <query, passage> pairs, struggle to effectively interpret and follow explicit user instructions. We introduce InF-IR, a large-scale, high-quality training corpus tailored for enhancing retrieval models in Instruction-Following IR. InF-IR expands traditional training pairs into over 38,000 expressive <instruction, query, passage> triplets as positive samples. In particular, for each positive triplet, we generate two additional hard negative examples by poisoning both instructions and queries, then rigorously validated by an advanced reasoning model (o3-mini) to ensure semantic plausibility while maintaining instructional incorrectness. Unlike existing corpora that primarily support computationally intensive reranking tasks for decoder-only language models, the highly contrastive positive-negative triplets in InF-IR further enable efficient representation learning for smaller encoder-only models, facilitating direct embedding-based retrieval. Using this corpus, we train InF-Embed, an instruction-aware Embedding model optimized through contrastive learning and instruction-query attention mechanisms to align retrieval outcomes precisely with user intents. Extensive experiments across five instruction-based retrieval benchmarks demonstrate that InF-Embed significantly surpasses competitive baselines by 8.1% in p-MRR, measuring the instruction-following capabilities.",
+      "published": "2025-05-27"
+    },
+    {
+      "id": "2409.11353v3",
+      "title": "THaMES: An End-to-End Tool for Hallucination Mitigation and Evaluation in Large Language Models",
+      "authors": [
+        "Mengfei Liang",
+        "Archish Arun",
+        "Zekun Wu",
+        "Cristian Munoz",
+        "Jonathan Lutch",
+        "Emre Kazim",
+        "Adriano Koshiyama",
+        "Philip Treleaven"
+      ],
+      "summary": "Hallucination, the generation of factually incorrect content, is a growing challenge in Large Language Models (LLMs). Existing detection and mitigation methods are often isolated and insufficient for domain-specific needs, lacking a standardized pipeline. This paper introduces THaMES (Tool for Hallucination Mitigations and EvaluationS), an integrated framework and library addressing this gap. THaMES offers an end-to-end solution for evaluating and mitigating hallucinations in LLMs, featuring automated test set generation, multifaceted benchmarking, and adaptable mitigation strategies. It automates test set creation from any corpus, ensuring high data quality, diversity, and cost-efficiency through techniques like batch processing, weighted sampling, and counterfactual validation. THaMES assesses a model's ability to detect and reduce hallucinations across various tasks, including text generation and binary classification, applying optimal mitigation strategies like In-Context Learning (ICL), Retrieval Augmented Generation (RAG), and Parameter-Efficient Fine-tuning (PEFT). Evaluations of state-of-the-art LLMs using a knowledge base of academic papers, political news, and Wikipedia reveal that commercial models like GPT-4o benefit more from RAG than ICL, while open-weight models like Llama-3.1-8B-Instruct and Mistral-Nemo gain more from ICL. Additionally, PEFT significantly enhances the performance of Llama-3.1-8B-Instruct in both evaluation tasks.",
+      "published": "2024-09-17"
+    }
+  ],
+  "selected_ids": [
+    "2511.06073v1",
+    "2408.00555v1"
+  ],
+  "paper_notes": [
+    {
+      "arxiv_id": "2511.06073v1",
+      "title": "Stemming Hallucination in Language Models Using a Licensing Oracle",
+      "methodology": "The authors compare five approaches to factual question-answering on a 17,726-pair dataset about U.S. rivers (derived from DBpedia): baseline LLMs (Claude Sonnet 4.5, Gemini 2.5 Flash Lite, Gemma 3-4B), LoRA fine-tuning for factual recall, LoRA fine-tuning for abstention (R-Tuning style), embedding-based RAG (multilingual-e5 + Gemini), and a Graph-RAG augmented with a 'Licensing Oracle' that uses SHACL validation against a 118,047-triple RDF knowledge graph to deterministically license or reject each extracted (subject, predicate, object) claim before emission.",
+      "key_findings": [
+        "Baseline LLMs achieved low factual accuracy on the domain (Claude Sonnet 4.5: 42.0%, Gemini 2.5 Flash Lite: 50.1%, Gemma 3-4B: 16.7%), confirming hallucination is widespread without grounding.",
+        "Fine-tuning for factual recall actually degraded accuracy (16.7% -> 8.5%), replicating Gekhman et al.'s 'fine-tuning paradox' where models become more confidently wrong.",
+        "Fine-tuning for abstention achieved only 56.7% abstention precision (near random), showing learned abstention is unreliable.",
+        "Embedding-based RAG sharply reduced hallucinations, improving accuracy from 50.1% to 89.5% (a 39.4 percentage-point gain) by injecting top-k retrieved passages into context.",
+        "Despite high accuracy, standard RAG has no principled abstention mechanism and still hallucinates when retrieved context is incomplete or contradictory ('epistemic mismatch').",
+        "Graph-based RAG with the Licensing Oracle matched RAG's accuracy (89.1%) while achieving perfect abstention precision (AP = 1.0) and zero false-answer rate on non-entailed claims (FAR-NE = 0.0), providing deterministic guarantees that statistical RAG cannot.",
+        "The authors argue retrieval augmentation alone is necessary but not sufficient; coupling retrieval with formal SHACL validation against a knowledge graph converts probabilistic grounding into 'constraint-governed generation.'"
+      ],
+      "limitations": [
+        "All experiments are single-run (n=1) with no variance estimates or significance testing.",
+        "Evaluation is restricted to one narrow domain (U.S. rivers from DBpedia), so generalization to open-domain or unstructured knowledge is unverified.",
+        "Approximately 15% of the validation graph's attributes were LLM-augmented, introducing a circularity concern.",
+        "The Oracle assumes perfect NER-based claim extraction (via GLiNER); real-world extraction errors could cause false abstentions or false validations.",
+        "The Licensing Oracle only works in domains representable as structured knowledge graphs with SHACL constraints; subjective, open-ended, or unstructured factual domains are out of scope.",
+        "RAG implementation uses a fixed top-k=5 with a single embedding model, so the reported RAG ceiling may not represent best-possible retrieval performance."
+      ],
+      "relevance_score": 7,
+      "relevance_reasoning": "The paper directly measures how retrieval augmentation reduces hallucinations (RAG cuts errors from ~50% to ~10%) and dissects RAG's mechanism and limits, but its central thesis is that RAG alone is insufficient and must be combined with formal graph-based validation. It is highly informative on RAG's empirical effect on hallucinations, though its primary contribution is an architectural alternative rather than a study of RAG itself."
+    },
+    {
+      "arxiv_id": "2408.00555v1",
+      "title": "Alleviating Hallucination in Large Vision-Language Models with Active Retrieval Augmentation",
+      "methodology": "The authors propose ARA (Active Retrieval-Augmented LVLM), a training-free framework that (a) actively decides whether to retrieve based on confidence/mutual-information difficulty metrics, (b) performs coarse-to-fine hierarchical retrieval over both whole images and grounded target objects against COCO and VisualGenome knowledge bases using CLIP embeddings, and (c) reranks retrieved image-text pairs by caption similarity before joint coarse/fine decoding with the LVLM.",
+      "key_findings": [
+        "Retrieval augmentation, when naively transferred from LLMs to LVLMs, can sometimes exacerbate hallucination, motivating a more careful design.",
+        "Coarse-to-fine hierarchical retrieval (full image + grounded object regions via Grounding DINO) reduces noise compared to full-image-only retrieval and recovers fine-grained details.",
+        "Active triggering of retrieval via query-aware mutual information (comparing p(answer|image,query) vs p(answer|query)) avoids unnecessary retrieval when the model is already confident, reducing retrieval frequency while preserving gains.",
+        "Reranking retrieved pairs using LVLM-generated captions filters visually-similar-but-semantically-different pairs and improves reliability.",
+        "On POPE across MSCOCO/A-OKVQA/GQA and three LVLMs (LLaVA-1.5, Qwen-VL, mPLUG-Owl2), ARA consistently improves F1, primarily by raising recall (up to ~10 points for mPLUG-Owl2).",
+        "On the MME hallucination subset, ARA improves object-level and attribute-level (especially Color) scores, raising LLaVA-1.5 total from 605 to 648.",
+        "On MMStar, ARA yields average gains of ~5-9 points across all six capability subsets for the three LVLMs.",
+        "On MMBench hallucination-related subsets (object localization, attribute, spatial relation, action), ARA improves average scores for all three LVLMs (e.g., Qwen-VL 0.668 -> 0.727)."
+      ],
+      "limitations": [
+        "Method is evaluated only on vision-language hallucination benchmarks (POPE, MME, MMStar, MMBench), not on pure-text LLM hallucination tasks.",
+        "Performance depends on external tools (Grounding DINO for object localization, LLaMA2-7B for entity extraction, CLIP for embeddings); failures in these components fall back to coarse retrieval only.",
+        "Effectiveness is tied to the coverage and quality of the external knowledge bases (COCO and VisualGenome); generalization to open-domain knowledge is not demonstrated.",
+        "Several hyperparameters (fusion weight alpha, active-retrieval threshold theta, number of retrieved pairs per LVLM) are tuned per benchmark via grid search, indicating sensitivity.",
+        "Improvements on harder adversarial settings (e.g., POPE adversarial, A-OKVQA adversarial) are smaller, suggesting residual difficulty with confusable co-occurring objects.",
+        "Inference cost increases due to grounding, multi-modal retrieval, reranking, and joint decoding, although the active-triggering mechanism partially mitigates this."
+      ],
+      "relevance_score": 7,
+      "relevance_reasoning": "The paper directly addresses how retrieval augmentation can reduce hallucinations, but specifically in large vision-language models rather than pure LLMs; many of the design insights (active triggering via mutual information, coarse-to-fine retrieval, reranking) transfer conceptually, though the multimodal focus means it only partially answers an LLM-centric research question."
+    }
+  ],
+  "final_report": "## How Retrieval Augmentation Reduces Hallucinations in Large Language Models\n\nThe available evidence demonstrates that retrieval augmentation substantially reduces hallucinations in language models, though important limitations and design considerations remain.\n\n**Empirical effectiveness.** arXiv:2511.06073v1 provides direct quantitative evidence: embedding-based RAG improved factual accuracy from 50.1% to 89.5% on a structured question-answering task about U.S. rivers, representing a 39.4 percentage-point reduction in hallucination rate. This dramatic improvement confirms that injecting retrieved contextual passages grounds model outputs in factual evidence. Similarly, arXiv:2408.00555v1 shows consistent F1 improvements across multiple vision-language benchmarks (POPE, MME, MMBench), primarily through increased recall, indicating that retrieval helps models surface correct information they might otherwise miss or fabricate.\n\n**Mechanism insights.** Both papers suggest retrieval works by providing external grounding that compensates for parametric knowledge gaps. However, arXiv:2511.06073v1 argues that retrieval alone is \"necessary but not sufficient,\" identifying \"epistemic mismatch\" as a residual failure mode: when retrieved context is incomplete or contradictory, standard RAG still hallucinates because it lacks a principled abstention mechanism. The paper demonstrates that coupling retrieval with formal validation (SHACL constraints over knowledge graphs) achieves perfect abstention precision and zero false-answer rate on non-entailed claims, converting probabilistic grounding into \"constraint-governed generation.\"\n\n**Design considerations.** arXiv:2408.00555v1 highlights that naive retrieval transfer can sometimes *exacerbate* hallucination in vision-language settings, motivating active retrieval triggering (retrieving only when confidence is low), coarse-to-fine hierarchical retrieval, and similarity-based reranking. These design choices reduce retrieval noise and unnecessary overhead while preserving gains.\n\n**Limitations of current evidence.** Both papers have narrow scopes: arXiv:2511.06073v1 evaluates only a single structured domain (U.S. rivers), while arXiv:2408.00555v1 focuses exclusively on vision-language models rather than pure text LLMs. Neither provides multi-run significance testing. The first paper's central contribution is actually a *replacement* for RAG (graph-based validation) rather than an analysis of RAG itself, and the second addresses multimodal rather than text-only hallucination.\n\nIn summary, retrieval augmentation demonstrably reduces hallucinations by grounding generation in external evidence, but effectiveness depends critically on retrieval quality, domain structure, and\u2014as arXiv:2511.06073v1 emphasizes\u2014complementary mechanisms for managing epistemic uncertainty when retrieval is insufficient."
+}

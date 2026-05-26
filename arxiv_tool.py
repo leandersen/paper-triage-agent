@@ -3,6 +3,28 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
+
+# Retry on transient network failures. We treat TimeoutError and URLError as
+# "the server might just be slow"; everything else (e.g. ValueError in our
+# own code) is a real bug and should NOT be retried.
+NETWORK_RETRY = retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(min=1, max=10),
+    retry=retry_if_exception_type((TimeoutError, urllib.error.URLError)),
+    reraise=True,
+    before_sleep=lambda retry_state: print(
+        f"NOTICE: arXiv call failed (attempt {retry_state.attempt_number}), "
+        f"retrying in {retry_state.next_action.sleep:.1f}s..."
+    ),
+)
+
+@NETWORK_RETRY
 def search_arxiv(query: str, max_results: int=5) -> list[dict]:
     """Search arXiv and return list of papers. 
     Returns list of dicts with keys: id, title, authors, summary, published.
@@ -17,7 +39,7 @@ def search_arxiv(query: str, max_results: int=5) -> list[dict]:
     }
     url = f"{base_url}?{urllib.parse.urlencode(params)}"
 
-    with urllib.request.urlopen(url, timeout=10) as response:
+    with urllib.request.urlopen(url, timeout=30) as response:
         xml_data = response.read().decode('utf-8')
     
     # arxiv returns atom xml
