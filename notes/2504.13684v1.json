@@ -1,0 +1,21 @@
+{
+  "title": "Intelligent Interaction Strategies for Context-Aware Cognitive Augmentation",
+  "methodology": "A position paper combined with a small qualitative think-aloud study (N=3 graduate students) in a university exhibition setting, observing how participants captured, processed, and synthesized multi-modal information, followed by semi-structured interviews to elicit design expectations for LLM-driven cognitive support.",
+  "key_findings": [
+    "Existing LLMs are reactive and one-size-fits-all, lacking contextual awareness of users' cognitive states and environments.",
+    "Participants engaged in both explicit (notes, photos, video) and implicit (gestures, movement, silent reading) information processing, suggesting AI should leverage multi-modal cues.",
+    "Environmental and social constraints (privacy, dim lighting, public settings) led users to avoid overt voice/gesture interactions, indicating a need for socially adaptive, discreet AI engagement.",
+    "Users want AI to support both real-time comprehension (summarization, contextualization) and post-visit knowledge organization (aggregation, structuring).",
+    "Different users follow different cognitive workflows (broad-conceptual vs. detail-oriented), so AI augmentation must adapt to individual reasoning styles.",
+    "The authors propose a framework with four design considerations: multi-modal awareness, cognitive workflow adaptation, socially adaptive interaction, and seamless transition between real-time and long-term support."
+  ],
+  "limitations": [
+    "Very small sample size (N=3), all MPhil/PhD students from a single institution, limiting generalizability.",
+    "Study confined to a single exhibition setting, which may not transfer to other knowledge-intensive contexts.",
+    "This is a position paper with preliminary findings; no system is implemented or evaluated.",
+    "No quantitative measurements of cognitive load, performance, or AI effectiveness are reported.",
+    "The paper does not directly address hallucination, factual accuracy, or retrieval-augmented generation mechanisms in any depth."
+  ],
+  "relevance_score": 2,
+  "relevance_reasoning": "The paper is about HCI design for context-aware cognitive augmentation with LLMs, not about retrieval augmentation or hallucination mitigation. RAG is only mentioned once via a citation (Lewis et al. 2020), with no analysis of how retrieval reduces hallucinations, so it is only tangentially related to the research question."
+}

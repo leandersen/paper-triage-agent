@@ -17,8 +17,11 @@ from langgraph.graph import StateGraph, START, END
 
 from arxiv_tool import search_arxiv
 from reader_agent import read_paper
+import structlog
+from logging_setup import configure_logging, log, new_run_id
 
 load_dotenv()
+configure_logging()
 client = Anthropic()
 
 # Shared state schema
@@ -37,7 +40,7 @@ def search_node(state: TriageState) -> dict:
     Uses Claude to turn the user's natural-language question into a focused
     keyword query, since arXiv's API is keyword-match, not semantic.
     """
-    print(f"\nSearch node: extracting keywords from: {state['research_question'][:60]}...")
+    log.info('search_node.start', question = state['research_question'][:80])
 
     # ask Claude for a focused search query.
     keyword_response = client.messages.create(
@@ -53,34 +56,38 @@ def search_node(state: TriageState) -> dict:
         }],
     )
     query = keyword_response.content[0].text.strip()
-    print(f"    query: {query}")
+    log.info("search_node.keywords_extracted", query=query)
 
     # Step 2: run the actual search.
     results = search_arxiv(query, max_results=5)
-    print(f"    found {len(results)} papers")
+    log.info("search_node.done", num_results=len(results), query=query)
     return {"search_results": results}
 
 def triage_node(state: TriageState) -> dict:
     """Pick which papers to deeply read. For now: top 2 by arXiv's relevance order."""
-    print('\nTriage node: selecting top papers...')
-    ids = [p['id'] for p in state['search_results'][:2]]
-    print(f'    selected: {ids}')
-    return {'selected_ids': ids}
+    log.info("triage_node.start", candidates=len(state["search_results"]))
+    ids = [p["id"] for p in state["search_results"][:2]]
+    log.info("triage_node.done", selected=ids)
+    return {"selected_ids": ids}
 
 def read_node(state: TriageState) -> dict:
     """Read each selected paper using the Agent SDK reader. Sequential for now."""
-    print(f"\nRead node: reading {len(state['selected_ids'])} papers...")
+    log.info("read_node.start", num_papers=len(state["selected_ids"]))
     notes = []
-    for arxiv_id in state['selected_ids']:
-        paper_notes = anyio.run(
-            read_paper, arxiv_id, state['research_question']
+    for arxiv_id in state["selected_ids"]:
+        log.info("read_node.paper_start", arxiv_id=arxiv_id)
+        paper_notes = anyio.run(read_paper, arxiv_id, state["research_question"])
+        notes.append({"arxiv_id": arxiv_id, **paper_notes})
+        log.info(
+            "read_node.paper_done",
+            arxiv_id=arxiv_id,
+            relevance_score=paper_notes.get("relevance_score"),
         )
-        notes.append({'arxiv_id': arxiv_id, **paper_notes})
-    return {'paper_notes':notes}
+    return {"paper_notes": notes}
 
 def synthesize_node(state: TriageState) -> dict:
     """Combine all notes into a literature-review-style answer."""
-    print("\nSynthesize node: writing final report...")
+    log.info("synthesize_node.start", num_notes=len(state["paper_notes"]))
     notes_summary = json.dumps(state['paper_notes'], indent=2)
     prompt = (
         f"Research question: {state['research_question']}\n\n"
@@ -96,6 +103,7 @@ def synthesize_node(state: TriageState) -> dict:
         messages=[{'role':'user','content':prompt}],
     )
     report = response.content[0].text
+    log.info("synthesize_node.done", report_chars=len(report))
     return {'final_report': report}
 
 # build graph
@@ -115,6 +123,10 @@ def build_graph():
     return builder.compile()
 
 if __name__ == '__main__':
+    run_id = new_run_id()
+    structlog.contextvars.bind_contextvars(run_id=run_id)
+    log.info("pipeline.start", run_id=run_id)
+
     graph=build_graph()
     
     initial_state: TriageState = {
@@ -127,12 +139,14 @@ if __name__ == '__main__':
 
     final_state=graph.invoke(initial_state)
 
+    log.info("pipeline.done", report_chars=len(final_state["final_report"]))
+
     print("\n" + "="*60)
     print("FINAL REPORT")
     print("="*60)
     print(final_state['final_report'])
 
     Path('runs').mkdir(exist_ok = True)
-    out = Path('runs') / 'latest_run.json'
-    out.write_text(json.dumps(final_state, indent = 2, default = str))
-    print(f"\nFull run saved to {out}")
+    out = Path("runs") / f"{run_id}.json"
+    out.write_text(json.dumps(final_state, indent=2, default=str))
+    log.info("pipeline.saved", path=str(out))
