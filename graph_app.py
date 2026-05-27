@@ -27,6 +27,7 @@ client = Anthropic()
 # Shared state schema
 class TriageState(TypedDict):
     research_question: str
+    max_papers: int
     search_results: list[dict]
     selected_ids: list[str]
     paper_notes: list[dict]
@@ -64,10 +65,11 @@ def search_node(state: TriageState) -> dict:
     return {"search_results": results}
 
 def triage_node(state: TriageState) -> dict:
-    """Pick which papers to deeply read. For now: top 2 by arXiv's relevance order."""
+    """Pick which papers to deeply read."""
     log.info("triage_node.start", candidates=len(state["search_results"]))
-    ids = [p["id"] for p in state["search_results"][:2]]
-    log.info("triage_node.done", selected=ids)
+    n = state.get("max_papers", 2)
+    ids = [p["id"] for p in state["search_results"][:n]]
+    log.info("triage_node.done", selected=ids, max_papers=n)
     return {"selected_ids": ids}
 
 def read_node(state: TriageState) -> dict:
@@ -122,31 +124,74 @@ def build_graph():
 
     return builder.compile()
 
-if __name__ == '__main__':
+def main() -> None:
+    """CLI entry point. Accepts a question as an argument or prompts for one."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        prog="paper-triage",
+        description=(
+            "Search arXiv, read the top papers, and produce a literature-review-style "
+            "answer to a research question."
+        ),
+    )
+    parser.add_argument(
+        "question",
+        nargs="?",
+        default=None,
+        help="The research question. If omitted, you'll be prompted interactively.",
+    )
+    parser.add_argument(
+        "--max-papers",
+        type=int,
+        default=2,
+        help="How many papers to read (default: 2). Each adds ~$0.30 and ~40s.",
+    )
+    args = parser.parse_args()
+
+    # Get the question from the arg or interactively.
+    question = args.question
+    if not question:
+        try:
+            question = input("Research question: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\nNo question provided. Exiting.")
+            return
+
+    if not question:
+        print("Empty question. Exiting.")
+        return
+
+    # Set up run-scoped logging context.
     run_id = new_run_id()
     structlog.contextvars.bind_contextvars(run_id=run_id)
-    log.info("pipeline.start", run_id=run_id)
+    log.info("pipeline.start", run_id=run_id, question=question[:80])
 
-    graph=build_graph()
-    
+    # Build and invoke the graph.
+    graph = build_graph()
     initial_state: TriageState = {
-        "research_question":"How can retrieval augmentation reduce hallucinations in large language models?",
+        "research_question": question,
+        "max_papers": args.max_papers,
         "search_results": [],
         "selected_ids": [],
         "paper_notes": [],
-        "final_report":"",
+        "final_report": "",
     }
-
-    final_state=graph.invoke(initial_state)
+    final_state = graph.invoke(initial_state)
 
     log.info("pipeline.done", report_chars=len(final_state["final_report"]))
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("FINAL REPORT")
-    print("="*60)
-    print(final_state['final_report'])
+    print("=" * 60)
+    print(final_state["final_report"])
 
-    Path('runs').mkdir(exist_ok = True)
+    # Persist the run.
+    Path("runs").mkdir(exist_ok=True)
     out = Path("runs") / f"{run_id}.json"
     out.write_text(json.dumps(final_state, indent=2, default=str))
     log.info("pipeline.saved", path=str(out))
+
+
+if __name__ == "__main__":
+    main()
