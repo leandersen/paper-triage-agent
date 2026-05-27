@@ -1,7 +1,7 @@
 """Eval: does the synthesizer actually cite the sources it was given?"""
 import pytest
 
-from graph_app import synthesize_node
+from src.graph_app import synthesize_node
 
 
 # A tiny, deterministic fixture: two papers with obvious cite-able IDs.

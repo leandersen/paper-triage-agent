@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from paper_tools import extract_text
+from src.paper_tools import extract_text
 
 
 # A paper we've already downloaded in earlier runs. Adjust if the cached file

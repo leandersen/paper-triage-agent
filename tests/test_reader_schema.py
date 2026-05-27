@@ -2,7 +2,7 @@
 import anyio
 import pytest
 
-from reader_agent import read_paper
+from src.reader_agent import read_paper
 
 
 # We test against a paper we know exists. Costs API tokens per run.

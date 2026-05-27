@@ -40,4 +40,4 @@ ENV PYTHONUNBUFFERED=1
 
 # When the container starts, run the CLI entry point. Anything passed to
 # `docker run paper-triage <args>` becomes args to graph_app.py.
-ENTRYPOINT ["python", "graph_app.py"]
+ENTRYPOINT ["python", "-m", "src.graph_app"]

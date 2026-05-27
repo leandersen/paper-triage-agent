@@ -15,10 +15,10 @@ from anthropic import Anthropic
 from dotenv import load_dotenv
 from langgraph.graph import StateGraph, START, END
 
-from arxiv_tool import search_arxiv
-from reader_agent import read_paper
+from src.arxiv_tool import search_arxiv
+from src.reader_agent import read_paper
 import structlog
-from logging_setup import configure_logging, log, new_run_id
+from src.logging_setup import configure_logging, log, new_run_id
 
 load_dotenv()
 configure_logging()

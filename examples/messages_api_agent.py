@@ -3,7 +3,7 @@ import json
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
-from arxiv_tool import search_arxiv
+from src.arxiv_tool import search_arxiv
 
 load_dotenv()
 client = Anthropic()

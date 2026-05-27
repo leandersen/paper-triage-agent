@@ -24,7 +24,7 @@ from claude_agent_sdk import (
 
 from dotenv import load_dotenv
 
-from paper_tools import(
+from src.paper_tools import(
     NOTES_DIR,
     download_pdf as _download_pdf,
     extract_text as _extract_text,
