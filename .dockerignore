@@ -1,0 +1,25 @@
+# Local Python environment - never ship to a container
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secrets - we pass these via -e at runtime, not bake them in
+.env
+
+# Git history is irrelevant in the image
+.git/
+.gitignore
+
+# Local development artifacts
+.DS_Store
+.vscode/
+.idea/
+
+# Cached downloads from prior runs (the container will fetch fresh)
+papers/
+notes/
+runs/
+
+# Documentation - not needed at runtime
+README.md
